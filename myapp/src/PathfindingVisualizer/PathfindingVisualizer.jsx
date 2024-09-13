@@ -46,34 +46,16 @@ export default class PathfindingVisualizer extends Component {
 
   toggleView() {
     if (!this.state.isRunning) {
-      this.clearGrid();
-      this.clearWalls();
-      const isDesktopView = !this.state.isDesktopView;
-      let grid;
-      if (isDesktopView) {
-        grid = this.getInitialGrid(
-          this.state.ROW_COUNT,
-          this.state.COLUMN_COUNT,
+        this.clearGrid();
+        this.clearWalls();
+        const grid = this.getInitialGrid(
+            this.state.ROW_COUNT,
+            this.state.COLUMN_COUNT,
         );
-        this.setState({isDesktopView, grid});
-      } else {
-        if (
-          this.state.START_NODE_ROW > this.state.MOBILE_ROW_COUNT ||
-          this.state.FINISH_NODE_ROW > this.state.MOBILE_ROW_COUNT ||
-          this.state.START_NODE_COL > this.state.MOBILE_COLUMN_COUNT ||
-          this.state.FINISH_NODE_COL > this.state.MOBILE_COLUMN_COUNT
-        ) {
-          alert('Start & Finish Nodes Must Be within 10 Rows x 20 Columns');
-        } else {
-          grid = this.getInitialGrid(
-            this.state.MOBILE_ROW_COUNT,
-            this.state.MOBILE_COLUMN_COUNT,
-          );
-          this.setState({isDesktopView, grid});
-        }
-      }
+        this.setState({ grid });
     }
   }
+
 
   /******************** Set up the initial grid ********************/
   getInitialGrid = (
@@ -393,128 +375,85 @@ export default class PathfindingVisualizer extends Component {
   }
 
   render() {
-    const {grid, mouseIsPressed} = this.state;
+    const { grid, mouseIsPressed } = this.state;
     return (
-      <div>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
-          <a className="navbar-brand" href="/">
-            <b>PathFinding Visualizer</b>
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <a
-                  className="nav-link"
-                  href="http://www.github.com/PrudhviGNV/pathFinderVisualizer">
-                  {' '}
-                  PathFinder Visualizer code{' '}
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="https://prudhvignv.github.io">
-                  Check Out Other Cool Projects
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <div className="pathfinding-visualizer">
+            <h1 className="title">Pathfinding Visualizer</h1>
+            <div className="button-container">
+                <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => this.clearGrid()}>
+                    Clear Grid
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-warning"
+                    onClick={() => this.clearWalls()}>
+                    Clear Walls
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => this.visualize('Dijkstra')}>
+                    Dijkstra's
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => this.visualize('AStar')}>
+                    A*
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => this.visualize('BFS')}>
+                    Breadth First Search
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => this.visualize('DFS')}>
+                    Depth First Search
+                </button>
+            </div>
 
-        <table
-          className="grid-container"
-          onMouseLeave={() => this.handleMouseLeave()}>
-          <tbody className="grid">
-            {grid.map((row, rowIdx) => {
-              return (
-                <tr key={rowIdx}>
-                  {row.map((node, nodeIdx) => {
-                    const {row, col, isFinish, isStart, isWall} = node;
-                    return (
-                      <Node
-                        key={nodeIdx}
-                        col={col}
-                        isFinish={isFinish}
-                        isStart={isStart}
-                        isWall={isWall}
-                        mouseIsPressed={mouseIsPressed}
-                        onMouseDown={(row, col) =>
-                          this.handleMouseDown(row, col)
-                        }
-                        onMouseEnter={(row, col) =>
-                          this.handleMouseEnter(row, col)
-                        }
-                        onMouseUp={() => this.handleMouseUp(row, col)}
-                        row={row}></Node>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <button
-          type="button"
-          className="btn btn-danger"
-          onClick={() => this.clearGrid()}>
-          Clear Grid
-        </button>
-        <button
-          type="button"
-          className="btn btn-warning"
-          onClick={() => this.clearWalls()}>
-          Clear Walls
-        </button>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => this.visualize('Dijkstra')}>
-          Dijkstra's
-        </button>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => this.visualize('AStar')}>
-          A*
-        </button>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => this.visualize('BFS')}>
-          Bread First Search
-        </button>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => this.visualize('DFS')}>
-          Depth First Search
-        </button>
-        {this.state.isDesktopView ? (
-          <button
-            type="button"
-            className="btn btn-light"
-            onClick={() => this.toggleView()}>
-            Mobile View
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="btn btn-dark"
-            onClick={() => this.toggleView()}>
-            Desktop View
-          </button>
-        )}
-      </div>
+            <table
+                className="grid-container"
+                onMouseLeave={() => this.handleMouseLeave()}>
+                <tbody className="grid">
+                    {grid.map((row, rowIdx) => {
+                        return (
+                            <tr key={rowIdx}>
+                                {row.map((node, nodeIdx) => {
+                                    const { row, col, isFinish, isStart, isWall } = node;
+                                    return (
+                                        <Node
+                                            key={nodeIdx}
+                                            col={col}
+                                            isFinish={isFinish}
+                                            isStart={isStart}
+                                            isWall={isWall}
+                                            mouseIsPressed={mouseIsPressed}
+                                            onMouseDown={(row, col) =>
+                                                this.handleMouseDown(row, col)
+                                            }
+                                            onMouseEnter={(row, col) =>
+                                                this.handleMouseEnter(row, col)
+                                            }
+                                            onMouseUp={() => this.handleMouseUp(row, col)}
+                                            row={row}></Node>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
     );
   }
+
 }
 
 /******************** Create Walls ********************/
