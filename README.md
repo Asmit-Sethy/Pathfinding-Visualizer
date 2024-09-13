@@ -14,7 +14,7 @@ Pathfinding algorithms are crucial in applications like network routing and mapp
 - A less effective algorithm for pathfinding; does not guarantee the shortest path but explores paths deeply before backtracking.
 
 #### Dijkstra's Algorithm
-- The pioneer of pathfinding algorithms, guaranteeing the shortest path in a weighted grid.
+- It can be used for unweighted graphs by treating all edge weights as equal. It finds the shortest path based on the number of edges, similar to Breadth-first Search (BFS).
 
 #### A* Search
 - A highly efficient algorithm that uses heuristics to find the shortest path much faster than Dijkstra's Algorithm.
